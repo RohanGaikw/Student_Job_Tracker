@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const JobList = () => {
@@ -13,15 +14,17 @@ const JobList = () => {
     status: ''
   });
 
+  const navigate = useNavigate();
+
   const fetchJobs = async () => {
     try {
       const user = JSON.parse(localStorage.getItem('user'));
       if (!user || !user._id) return;
-  
+
       const queryParams = new URLSearchParams();
-      queryParams.append('createdBy', user._id); // ✅ filter by user
-      if (statusFilter) queryParams.append('status', statusFilter); // ✅ optional filter
-  
+      queryParams.append('createdBy', user._id);
+      if (statusFilter) queryParams.append('status', statusFilter);
+
       const url = `${import.meta.env.VITE_BACKEND_URL}/jobs?${queryParams.toString()}`;
       const res = await axios.get(url);
       setJobs(Array.isArray(res.data) ? res.data : []);
@@ -30,7 +33,6 @@ const JobList = () => {
       setJobs([]);
     }
   };
-  
 
   useEffect(() => {
     fetchJobs();
@@ -82,128 +84,135 @@ const JobList = () => {
   };
 
   return (
-    
-    <div
-    style={{
-      height: '100vh',
+    <div style={{
+      minHeight: '100vh',
       background: 'linear-gradient(135deg, #fbc2eb, #a6c1ee)',
-      display: 'flex',
-      flexDirection: 'column',
-      width:'220vh'
-    }}
-  >
-    {/* Navbar */}
-    <nav
-      style={{
-        backgroundColor: '#1e1e1e',
-        color: 'white',
-        padding: '20px 50px',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      }}
-    >
-       <h4 onClick={() => navigate('/')} style={{ margin: 0, cursor: 'pointer' }}>
-  Student Job Tracker
-</h4>
+      paddingBottom: '30px'
+    }}>
+      {/* Navbar */}
+      <nav
+        style={{
+          backgroundColor: '#1e1e1e',
+          color: 'white',
+          padding: '20px 50px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <h4 onClick={() => navigate('/')} style={{ margin: 0, cursor: 'pointer' }}>
+          Student Job Tracker
+        </h4>
       </nav>
 
-    <div className="container my-4">
-      <h2 className="text-primary mb-3">📋 All Job Applications</h2>
+      <div className="container my-4">
+        <h2 className="text-primary mb-3">📋 All Job Applications</h2>
 
-      <div className="mb-3">
-        <label htmlFor="statusFilter" className="form-label">Filter by Status:</label>
-        <select
-          id="statusFilter"
-          className="form-select w-auto"
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-        >
-          <option value="">All</option>
-          <option value="Applied">Applied</option>
-          <option value="Interview">Interview</option>
-          <option value="Offer">Offer</option>
-          <option value="Rejected">Rejected</option>
-        </select>
-      </div>
-
-      {jobs.length === 0 ? (
-        <p className="text-muted">No job applications found.</p>
-      ) : (
-        <div className="row g-3">
-        {jobs.map((job) => (
-          <div className="col-md-12 col-lg-6" key={job._id}> {/* 👈 Wider card */}
-         <div className="card h-150 shadow-sm" style={{ minWidth: '400px'}}>
-              <div className="card-body">
-                {editId === job._id ? (
-                  <>
-                    <input
-                      type="text"
-                      className="form-control mb-2"
-                      placeholder="Company"
-                      value={editData.company}
-                      onChange={(e) => setEditData({ ...editData, company: e.target.value })}
-                    />
-                    <input
-                      type="text"
-                      className="form-control mb-2"
-                      placeholder="Role"
-                      value={editData.role}
-                      onChange={(e) => setEditData({ ...editData, role: e.target.value })}
-                    />
-                    <input
-                      type="url"
-                      className="form-control mb-2"
-                      placeholder="Link"
-                      value={editData.link}
-                      onChange={(e) => setEditData({ ...editData, link: e.target.value })}
-                    />
-                    <input
-                      type="date"
-                      className="form-control mb-2"
-                      value={editData.appliedDate}
-                      onChange={(e) => setEditData({ ...editData, appliedDate: e.target.value })}
-                    />
-                    <select
-                      className="form-select mb-2"
-                      value={editData.status}
-                      onChange={(e) => setEditData({ ...editData, status: e.target.value })}
-                    >
-                      <option value="Applied">Applied</option>
-                      <option value="Interview">Interview</option>
-                      <option value="Offer">Offer</option>
-                      <option value="Rejected">Rejected</option>
-                    </select>
-                    <div className="d-flex justify-content-between">
-                      <button className="btn btn-success btn-sm" onClick={saveEdit}>💾 Save</button>
-                      <button className="btn btn-outline-secondary btn-sm" onClick={() => setEditId(null)}>❌ Cancel</button>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <h5 className="card-title">{job.company}</h5>
-                    <h6 className="card-subtitle mb-2 text-muted">{job.role}</h6>
-                    <p>
-                      <a href={job.link} target="_blank" rel="noopener noreferrer" className="card-link">🔗 View Job</a>
-                    </p>
-                    <p className="mb-1">📅 {job.appliedDate?.substring(0, 10)}</p>
-                    <p className="mb-2">Status: <strong>{job.status}</strong></p>
-                    <div className="d-flex justify-content-between">
-                      <button className="btn btn-outline-primary btn-sm" onClick={() => startEdit(job)}>✏️ Edit</button>
-                      <button className="btn btn-outline-danger btn-sm" onClick={() => handleDelete(job._id)}>❌ Delete</button>
-                    </div>
-                  
-                  </>
-                )}
-              </div>
-            </div>
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <div>
+            <label htmlFor="statusFilter" className="form-label me-2">Filter:</label>
+            <select
+              id="statusFilter"
+              className="form-select d-inline-block w-auto"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+            >
+              <option value="">All</option>
+              <option value="Applied">Applied</option>
+              <option value="Interview">Interview</option>
+              <option value="Offer">Offer</option>
+              <option value="Rejected">Rejected</option>
+            </select>
           </div>
-          
-        ))}
+
+          <div>
+            <button className="btn btn-success me-2" onClick={() => navigate('/add-job')}>
+              ➕ Add Job
+            </button>
+            <button
+              className="btn btn-danger"
+              onClick={() => {
+                localStorage.removeItem('user');
+                navigate('/');
+              }}
+            >
+              🔓 Logout
+            </button>
+          </div>
+        </div>
+
+        {jobs.length === 0 ? (
+          <p className="text-muted">No job applications found.</p>
+        ) : (
+          <div className="d-flex flex-wrap gap-3 justify-content-center">
+            {jobs.map((job) => (
+              <div className="card shadow-sm" style={{ width: '100%', maxWidth: '500px' }} key={job._id}>
+                <div className="card-body">
+                  {editId === job._id ? (
+                    <>
+                      <input
+                        type="text"
+                        className="form-control mb-2"
+                        placeholder="Company"
+                        value={editData.company}
+                        onChange={(e) => setEditData({ ...editData, company: e.target.value })}
+                      />
+                      <input
+                        type="text"
+                        className="form-control mb-2"
+                        placeholder="Role"
+                        value={editData.role}
+                        onChange={(e) => setEditData({ ...editData, role: e.target.value })}
+                      />
+                      <input
+                        type="url"
+                        className="form-control mb-2"
+                        placeholder="Link"
+                        value={editData.link}
+                        onChange={(e) => setEditData({ ...editData, link: e.target.value })}
+                      />
+                      <input
+                        type="date"
+                        className="form-control mb-2"
+                        value={editData.appliedDate}
+                        onChange={(e) => setEditData({ ...editData, appliedDate: e.target.value })}
+                      />
+                      <select
+                        className="form-select mb-2"
+                        value={editData.status}
+                        onChange={(e) => setEditData({ ...editData, status: e.target.value })}
+                      >
+                        <option value="Applied">Applied</option>
+                        <option value="Interview">Interview</option>
+                        <option value="Offer">Offer</option>
+                        <option value="Rejected">Rejected</option>
+                      </select>
+                      <div className="d-flex justify-content-between">
+                        <button className="btn btn-success btn-sm" onClick={saveEdit}>💾 Save</button>
+                        <button className="btn btn-outline-secondary btn-sm" onClick={() => setEditId(null)}>❌ Cancel</button>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <h5 className="card-title">{job.company}</h5>
+                      <h6 className="card-subtitle mb-2 text-muted">{job.role}</h6>
+                      <p>
+                        <a href={job.link} target="_blank" rel="noopener noreferrer" className="card-link">🔗 View Job</a>
+                      </p>
+                      <p className="mb-1">📅 {job.appliedDate?.substring(0, 10)}</p>
+                      <p className="mb-2">Status: <strong>{job.status}</strong></p>
+                      <div className="d-flex justify-content-between">
+                        <button className="btn btn-outline-primary btn-sm" onClick={() => startEdit(job)}>✏️ Edit</button>
+                        <button className="btn btn-outline-danger btn-sm" onClick={() => handleDelete(job._id)}>❌ Delete</button>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
-      
-      )}
-    </div>
     </div>
   );
 };
