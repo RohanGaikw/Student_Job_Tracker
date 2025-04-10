@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 const AddJobForm = () => {
   const navigate = useNavigate();
-
   const [form, setForm] = useState({
     company: '',
     role: '',
@@ -13,11 +12,11 @@ const AddJobForm = () => {
     link: ''
   });
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const user = JSON.parse(localStorage.getItem('user'));
@@ -56,7 +55,7 @@ const AddJobForm = () => {
       </nav>
 
       {/* Form Section */}
-      <div className="container my-4">
+      <div className="container my-4 px-3 px-md-0">
         <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
           <h2 className="text-success mb-3 mb-md-0">➕ Add Job Application</h2>
           <button
@@ -128,13 +127,13 @@ const AddJobForm = () => {
             />
           </div>
 
-          <div className="col-12 mt-3 d-flex flex-column flex-md-row gap-2">
-            <button type="submit" className="btn btn-primary w-100 w-md-auto">
+          <div className="col-12 mt-3 d-grid gap-2 d-md-flex justify-content-md-start">
+            <button type="submit" className="btn btn-primary">
               ✅ Add Job
             </button>
             <button
               type="button"
-              className="btn btn-danger w-100 w-md-auto"
+              className="btn btn-danger"
               onClick={() => {
                 localStorage.removeItem('user');
                 navigate('/');
