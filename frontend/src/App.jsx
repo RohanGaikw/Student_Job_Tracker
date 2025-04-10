@@ -14,6 +14,7 @@ const Home = () => {
     <div
       style={{
         minHeight: '100vh',
+        width: '100%',
         background: 'linear-gradient(135deg, #fbc2eb, #a6c1ee)',
         display: 'flex',
         flexDirection: 'column',
@@ -65,11 +66,12 @@ const Home = () => {
       </nav>
 
       {/* Welcome Section */}
-      <div className="d-flex justify-content-center align-items-center" style={{ flex: 1 }}>
+      <div className="container d-flex justify-content-center align-items-center flex-grow-1">
         <div
+          className="w-100"
           style={{
-            background: 'rgba(255, 255, 255, 0.7)',
-            padding: '40px',
+            background: 'rgba(255, 255, 255, 0.8)',
+            padding: '30px',
             borderRadius: '15px',
             maxWidth: '700px',
             textAlign: 'center',
