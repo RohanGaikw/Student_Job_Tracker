@@ -21,79 +21,42 @@ const RegisterPage = () => {
 
   return (
     <div
+    style={{
+      height: '100vh',
+      background: 'linear-gradient(135deg, #fbc2eb, #a6c1ee)',
+      display: 'flex',
+      flexDirection: 'column',
+      width:'220vh'
+    }}
+  >
+    {/* Navbar */}
+    <nav
       style={{
-        minHeight: '100vh',
-        background: 'linear-gradient(135deg, #fbc2eb, #a6c1ee)',
+        backgroundColor: '#1e1e1e',
+        color: 'white',
+        padding: '20px 50px',
         display: 'flex',
-        flexDirection: 'column',
+        justifyContent: 'space-between',
+        alignItems: 'center',
       }}
     >
-      {/* Navbar */}
-      <nav
-        style={{
-          backgroundColor: '#1e1e1e',
-          color: 'white',
-          padding: '20px 50px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
-        <h4 onClick={() => navigate('/')} style={{ margin: 0, cursor: 'pointer' }}>
-          Student Job Tracker
-        </h4>
+       <h4 onClick={() => navigate('/')} style={{ margin: 0, cursor: 'pointer' }}>
+  Student Job Tracker
+</h4>
       </nav>
-
-      {/* Register Form */}
-      <div
-        className="d-flex flex-column align-items-center justify-content-center"
-        style={{ flex: 1, padding: '40px 20px' }}
-      >
-        <div className="card p-4 shadow" style={{ maxWidth: '400px', width: '100%' }}>
-          <h2 className="text-center mb-4">Register</h2>
-          <form onSubmit={handleSubmit}>
-            <input
-              className="form-control mb-3"
-              name="name"
-              type="text"
-              placeholder="Name"
-              required
-              value={form.name}
-              onChange={handleChange}
-            />
-            <input
-              className="form-control mb-3"
-              name="email"
-              type="email"
-              placeholder="Email"
-              required
-              value={form.email}
-              onChange={handleChange}
-            />
-            <input
-              className="form-control mb-3"
-              name="password"
-              type="password"
-              placeholder="Password"
-              required
-              value={form.password}
-              onChange={handleChange}
-            />
-            <button className="btn btn-primary w-100" type="submit">
-              Register
-            </button>
-            <p className="mt-3 text-center">
-              Already have an account?{' '}
-              <span
-                style={{ cursor: 'pointer', color: 'blue' }}
-                onClick={() => navigate('/login-page')}
-              >
-                Login
-              </span>
-            </p>
-          </form>
-        </div>
-      </div>
+    <div className="container my-5" style={{ maxWidth: '400px' }}>
+      <h2 className="text-center mb-4">Register</h2>
+      <form onSubmit={handleSubmit}>
+        <input className="form-control mb-3" name="name" type="text" placeholder="Name" required value={form.name} onChange={handleChange} />
+        <input className="form-control mb-3" name="email" type="email" placeholder="Email" required value={form.email} onChange={handleChange} />
+        <input className="form-control mb-3" name="password" type="password" placeholder="Password" required value={form.password} onChange={handleChange} />
+        <button className="btn btn-primary w-100" type="submit">Register</button>
+        <p className="mt-3 text-center">
+          Already have an account? <span style={{ cursor: 'pointer', color: 'blue' }} onClick={() => navigate('/login-page')}>Login</span>
+        </p>
+      </form>
+    </div>
+   
     </div>
   );
 };
